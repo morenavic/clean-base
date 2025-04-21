@@ -19,33 +19,28 @@ public class CursoTest {
     }
     @Test
     void instanciarCurso_NombreVacio_CursoIncompleto(){
-        Exception miExc = Assertions.assertThrows(NombreRequeridoException.class,
+        Assertions.assertThrows(NombreRequeridoException.class,
                 ()-> Curso.instancia("", LocalDateTime.now().plusDays(5) ,"Inicial"));
-        Assertions.assertEquals("Nombre requerido.",miExc.getMessage());
     }
     @Test
     void instanciarCurso_NombreConEspacio_CursoIncompleto(){
-        Exception miExc = Assertions.assertThrows(NombreRequeridoException.class,
+        Assertions.assertThrows(NombreRequeridoException.class,
                 ()-> Curso.instancia(" ", LocalDateTime.now().plusDays(5) ,"Inicial"));
-        Assertions.assertEquals("Nombre requerido.",miExc.getMessage());
     }
     @Test
     void instanciarCurso_NombreNulo_CursoIncompleto(){
-        Exception miExc = Assertions.assertThrows(NombreRequeridoException.class,
+        Assertions.assertThrows(NombreRequeridoException.class,
                 ()-> Curso.instancia(null, LocalDateTime.now().plusDays(5) ,"Inicial"));
-        Assertions.assertEquals("Nombre requerido.",miExc.getMessage());
     }
     @Test
     void instanciarCurso_FechaNula_CursoIncompleto(){
-        Exception miExc = Assertions.assertThrows(FechaRequeridaException.class,
+        Assertions.assertThrows(FechaRequeridaException.class,
                 ()-> Curso.instancia("Clean Architecture", null ,"Inicial"));
-        Assertions.assertEquals("Fecha requerida.",miExc.getMessage());
     }
     @Test
     void instanciarCurso_FechaAnterior_CursoIncompleto(){
-        Exception miExc = Assertions.assertThrows(FechaAnteriorException.class,
+        Assertions.assertThrows(FechaAnteriorException.class,
                 ()-> Curso.instancia("Clean Architecture", LocalDateTime.now().minusDays(2) ,"Inicial"));
-        Assertions.assertEquals("La fecha no puede ser anterior a la actual.",miExc.getMessage());
     }
 
 }

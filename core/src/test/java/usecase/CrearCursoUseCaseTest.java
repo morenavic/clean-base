@@ -1,5 +1,6 @@
 package usecase;
 
+import curso.exception.CursoExisteException;
 import curso.modelo.Curso;
 import curso.output.ICrearCursoRepositorio;
 import curso.usecase.CrearCursoUseCase;
@@ -35,4 +36,15 @@ public class CrearCursoUseCaseTest {
         Assertions.assertTrue(resultado);
     }
 
+    @Test
+    void crearCurso_CursoExiste_CursoExisteException(){
+        //Arrange
+        Curso curso = Curso.instancia("Bases de Datos",LocalDateTime.now().plusDays(3),"Medio");
+        CrearCursoUseCase crearCursoUseCase = new CrearCursoUseCase(iCrearCursoRepositorio);
+        //Simulo la base de datos
+        when(iCrearCursoRepositorio.existe(curso.getNombre())).thenReturn(true);
+        //Act - Assert
+        Assertions.assertThrows(CursoExisteException.class, () -> crearCursoUseCase.crearCurso(curso));
+        //Se podría incluir un assert que valide que el metodo guardar() no se ha llamado
+        }
 }

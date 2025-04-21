@@ -1,5 +1,6 @@
 package curso.usecase;
 
+import curso.exception.CursoExisteException;
 import curso.input.ICrearCursoInput;
 import curso.modelo.Curso;
 import curso.output.ICrearCursoRepositorio;
@@ -15,7 +16,7 @@ public class CrearCursoUseCase implements ICrearCursoInput {
     @Override
     public boolean crearCurso(Curso curso) {
         if(iCrearCursoRepositorio.existe(curso.getNombre())){
-            return false;
+            throw new CursoExisteException("El curso ya existe.");
         }else{
             iCrearCursoRepositorio.guardar(curso);
             return true;
