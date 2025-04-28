@@ -12,14 +12,14 @@ public class Curso {
     private final LocalDateTime fechaCierreInscripcion;
     private Nivel nivel;
 
-    public Curso(String nombre, LocalDateTime fechaCierreInscripcion, Nivel nivel) {
+    private Curso(String nombre, LocalDateTime fechaCierreInscripcion, Nivel nivel) {
         this.nombre = nombre;
         this.fechaCierreInscripcion = fechaCierreInscripcion;
         this.nivel = nivel;
     }
 
     //Factory Method
-    public static Curso instancia(String nombre, LocalDateTime fecha_cierre_inscripcion, String nivelString) {
+    public static Curso instancia(String nombre, LocalDateTime fecha_cierre_inscripcion, Nivel nivel) {
         if(nombre == null || nombre.isBlank()){
             throw new NombreRequeridoException("Nombre requerido.");
         }
@@ -30,7 +30,6 @@ public class Curso {
             throw new FechaAnteriorException("La fecha no puede ser anterior a la actual.");
         }
 
-        Nivel nivel = Nivel.validarNivel(nivelString);
         return new Curso(nombre,fecha_cierre_inscripcion,nivel);
     }
 
