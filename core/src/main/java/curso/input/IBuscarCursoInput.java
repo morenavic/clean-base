@@ -4,11 +4,11 @@ import curso.modelo.Curso;
 import curso.modelo.Nivel;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Collection;
 
 public interface IBuscarCursoInput {
-    List<Curso> buscarTodosLosCursos();
+    Collection<Curso> buscarTodosLosCursos();
     Curso buscarCursoPorNombre(String nombre);
-    List<Curso> buscarCursoPorFecha(LocalDateTime fechaCierreInscripcion);
-    List<Curso> buscarCursoPorNivel(Nivel nivelBuscado);
+    Collection<Curso> buscarCursoPorFecha(LocalDateTime fechaCierreInscripcion);
+    Collection<Curso> buscarCursoPorNivel(Nivel nivelBuscado);
 }

@@ -35,7 +35,7 @@ public class BuscarCursoUseCaseTest {
         when(iBuscarCursoRepositorio.buscarTodos()).thenReturn(listaCursoSimulada);
 
         //Act
-        List<Curso> resultado = buscarCursoUseCase.buscarTodosLosCursos();
+        List<Curso> resultado = buscarCursoUseCase.buscarTodosLosCursos().stream().toList();
 
         //Assert
         Assertions.assertNotNull(resultado);
@@ -66,7 +66,6 @@ public class BuscarCursoUseCaseTest {
     @Test
     void buscarCursos_NoExistenCursos_BuscarPorNombre() {
         // Arrange
-        Curso curso = Curso.instancia("Java", LocalDateTime.now().plusDays(10), Nivel.AVANZADO);
         BuscarCursoUseCase buscarCursoUseCase = new BuscarCursoUseCase(iBuscarCursoRepositorio);
 
         when(iBuscarCursoRepositorio.buscarPorNombre("TypeScript")).thenReturn(null);
@@ -88,7 +87,7 @@ public class BuscarCursoUseCaseTest {
         when(iBuscarCursoRepositorio.buscarPorFecha(fechaBusqueda)).thenReturn(listaCursoSimulada);
 
         // Act
-        List<Curso> resultado = buscarCursoUseCase.buscarCursoPorFecha(fechaBusqueda);
+        List<Curso> resultado = buscarCursoUseCase.buscarCursoPorFecha(fechaBusqueda).stream().toList();
 
         // Assert
         Assertions.assertNotNull(resultado);
@@ -102,7 +101,6 @@ public class BuscarCursoUseCaseTest {
     @Test
     void buscarCursos_NoExistenCursos_BuscarPorFecha() {
         // Arrange
-        Curso curso = Curso.instancia("Spring Boot", LocalDateTime.now().plusDays(10), Nivel.MEDIO);
         BuscarCursoUseCase buscarCursoUseCase = new BuscarCursoUseCase(iBuscarCursoRepositorio);
 
         LocalDateTime fechaBusqueda = LocalDateTime.now().plusDays(11);
@@ -126,7 +124,7 @@ public class BuscarCursoUseCaseTest {
         when(iBuscarCursoRepositorio.buscarPorNivel(nivelBuscado)).thenReturn(listaCursoSimulada);
 
         // Act
-        List<Curso> resultado = buscarCursoUseCase.buscarCursoPorNivel(nivelBuscado);
+        List<Curso> resultado = buscarCursoUseCase.buscarCursoPorNivel(nivelBuscado).stream().toList();
 
         // Assert
         Assertions.assertNotNull(resultado);
@@ -140,7 +138,6 @@ public class BuscarCursoUseCaseTest {
     @Test
     void buscarCursos_NoExistenCursos_BuscarPorNivel() {
         // Arrange
-        Curso curso = Curso.instancia("Spring Boot", LocalDateTime.now().plusDays(10), Nivel.MEDIO);
         BuscarCursoUseCase buscarCursoUseCase = new BuscarCursoUseCase(iBuscarCursoRepositorio);
 
         Nivel nivelBuscado = Nivel.MEDIO;

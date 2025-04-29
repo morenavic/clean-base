@@ -7,7 +7,7 @@ import curso.modelo.Nivel;
 import curso.output.IBuscarCursoRepositorio;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Collection;
 
 public class BuscarCursoUseCase implements IBuscarCursoInput {
 
@@ -19,7 +19,7 @@ public class BuscarCursoUseCase implements IBuscarCursoInput {
 
 
     @Override
-    public List<Curso> buscarTodosLosCursos() {
+    public Collection<Curso> buscarTodosLosCursos() {
         if(iBuscarCursoRepositorio.buscarTodos().isEmpty()){
             throw new NoExisteCursoException("No hay cursos para listar.");
         }
@@ -38,8 +38,8 @@ public class BuscarCursoUseCase implements IBuscarCursoInput {
     }
 
     @Override
-    public List<Curso> buscarCursoPorFecha(LocalDateTime fechaCierreInscripcion) {
-        List<Curso> curso = iBuscarCursoRepositorio.buscarPorFecha(fechaCierreInscripcion);
+    public Collection<Curso> buscarCursoPorFecha(LocalDateTime fechaCierreInscripcion) {
+        Collection<Curso> curso = iBuscarCursoRepositorio.buscarPorFecha(fechaCierreInscripcion);
 
         if(curso == null || curso.isEmpty()){
             throw new NoExisteCursoException("No existe un curso con fecha posterior a esta.");
@@ -49,8 +49,8 @@ public class BuscarCursoUseCase implements IBuscarCursoInput {
     }
 
     @Override
-    public List<Curso> buscarCursoPorNivel(Nivel nivelBuscado) {
-        List<Curso> curso = iBuscarCursoRepositorio.buscarPorNivel(nivelBuscado);
+    public Collection<Curso> buscarCursoPorNivel(Nivel nivelBuscado) {
+        Collection<Curso> curso = iBuscarCursoRepositorio.buscarPorNivel(nivelBuscado);
 
         if(curso == null || curso.isEmpty()){
             throw new NoExisteCursoException("No existe un curso con ese nivel.");
