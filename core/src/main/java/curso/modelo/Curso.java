@@ -36,4 +36,12 @@ public class Curso {
     public String getNombre() {
         return nombre;
     }
+
+    public LocalDateTime getFechaCierreInscripcion() {
+        return fechaCierreInscripcion;
+    }
+
+    public Nivel getNivel() {
+        return nivel;
+    }
 }
