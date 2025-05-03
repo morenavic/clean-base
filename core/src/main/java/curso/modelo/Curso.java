@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 
 public class Curso {
 
+    private Integer id;
     private String nombre;
     private final LocalDateTime fechaCierreInscripcion;
     private Nivel nivel;
