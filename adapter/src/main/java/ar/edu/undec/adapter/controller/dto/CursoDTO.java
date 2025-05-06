@@ -1,43 +1,27 @@
-package ar.edu.undec.adapter.entity;
+package ar.edu.undec.adapter.controller.dto;
 
 import curso.modelo.Nivel;
-import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
-@Entity(name = "cursos") //Marca esta clase como una entidad de base de datos
-public class CursoEntity {
+/**
+ * DTO (Data Transfer Object) para representar los datos del Curso
+ * que se envían o reciben por la capa de controlador.
+ */
+public class CursoDTO {
 
-    @Id
-    @Column(name = "id_curso")
-    @GeneratedValue(strategy = GenerationType.IDENTITY) //Auto-incremental
-    private Integer id;
-
-    @Column(name = "nombre")
     private String nombre;
-    @Column(name = "fecha_cierre_inscripcion")
     private LocalDateTime fechaCierreInscripcion;
-    @Column(name = "nivel")
-    @Enumerated(EnumType.STRING) //Guarda el enum como texto en la base de datos
     private Nivel nivel;
 
-    //Constructor vacío requerido por JPA
-    public CursoEntity() {
-    }
+    //Constructor vacío requerido por Spring
+    public CursoDTO() {}
 
-    public CursoEntity(Integer id, String nombre, LocalDateTime fechaCierreInscripcion, Nivel nivel) {
-        this.id = id;
+    //Constructor completo útil para crear el DTO
+    public CursoDTO(String nombre, LocalDateTime fechaCierreInscripcion, Nivel nivel) {
         this.nombre = nombre;
         this.fechaCierreInscripcion = fechaCierreInscripcion;
         this.nivel = nivel;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String getNombre() {

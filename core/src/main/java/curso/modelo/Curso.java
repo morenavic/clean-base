@@ -13,7 +13,7 @@ public class Curso {
     private final LocalDateTime fechaCierreInscripcion;
     private Nivel nivel;
 
-    private Curso(String nombre, LocalDateTime fechaCierreInscripcion, Nivel nivel) {
+    public Curso(String nombre, LocalDateTime fechaCierreInscripcion, Nivel nivel) {
         this.nombre = nombre;
         this.fechaCierreInscripcion = fechaCierreInscripcion;
         this.nivel = nivel;
