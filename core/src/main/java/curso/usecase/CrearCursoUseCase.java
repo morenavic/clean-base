@@ -16,12 +16,16 @@ public class CrearCursoUseCase implements ICrearCursoInput {
 
     @Override
     public boolean crearCurso(Curso curso) {
+
+        //Crea una instancia del curso para realizar validaciones
+        Curso cursoInstancia = Curso.instancia(curso.getNombre(),curso.getFechaCierreInscripcion(),curso.getNivel());
+
         if(iCrearCursoRepositorio.existe(curso.getNombre())){
             throw new CursoExisteException("El curso ya existe.");
         }
 
         // Capturo el valor que retorna el metodo guardar() y arrojo una excepción de ser necesario.
-        boolean cursoGuardado = iCrearCursoRepositorio.guardar(curso);
+        boolean cursoGuardado = iCrearCursoRepositorio.guardar(cursoInstancia);
 
         if(!cursoGuardado){
             throw new GuardarCursoException("No se pudo guardar el curso.");
