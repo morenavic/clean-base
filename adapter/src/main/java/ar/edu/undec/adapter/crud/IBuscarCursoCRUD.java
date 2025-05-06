@@ -12,7 +12,7 @@ public interface IBuscarCursoCRUD extends JpaRepository<CursoEntity, Integer> {
     //Buscar curso por nombre
     CursoEntity findByNombre(String nombre);
     //Buscar cursos por fecha posteriores a la de cierre de inscripción
-    Collection<CursoEntity> findByFechaCierreInscripcion(LocalDateTime fecha);
+    Collection<CursoEntity> findByFechaCierreInscripcionAfter(LocalDateTime fecha);
     //Buscar cursos por nivel (INICIAL, MEDIO, AVANZADO)
     Collection<CursoEntity> findByNivel(Nivel nivel);
 }

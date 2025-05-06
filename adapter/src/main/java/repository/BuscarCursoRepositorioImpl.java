@@ -46,7 +46,7 @@ public class BuscarCursoRepositorioImpl implements IBuscarCursoRepositorio {
     //Busca cursos por fecha de cierre de inscripción
     @Override
     public Collection<Curso> buscarPorFecha(LocalDateTime fecha) {
-        Collection<CursoEntity> cursosEntities = iBuscarCursoCRUD.findByFechaCierreInscripcion(fecha);
+        Collection<CursoEntity> cursosEntities = iBuscarCursoCRUD.findByFechaCierreInscripcionAfter(fecha);
 
         //Devuelve una lista vacía si no encuentra nada
         if (cursosEntities == null || cursosEntities.isEmpty()) {

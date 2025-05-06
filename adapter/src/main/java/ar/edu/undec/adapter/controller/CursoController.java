@@ -6,9 +6,11 @@ import curso.input.ICrearCursoInput;
 import curso.modelo.Curso;
 import curso.modelo.Nivel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
@@ -32,7 +34,6 @@ public class CursoController {
     //Endpoint para crear un curso: POST /cursos
     @PostMapping
     public ResponseEntity<String> crearCursoDTO(@RequestBody CursoDTO cursoDTO){
-
         //Convertimos el DTO directamente al modelo del core (Curso)
         Curso curso = new Curso(
                 cursoDTO.getNombre(),
@@ -68,9 +69,8 @@ public class CursoController {
 
     //Endpoint para buscar cursos por fecha posterior al cierre de inscripción: GET /cursos/fecha/{fecha}
     @GetMapping("/fecha/{fecha}")
-    public ResponseEntity<Collection<CursoDTO>> obtenerCursosPorFecha(@PathVariable("fecha") String fechaStr) {
-        //Convertir la cadena de texto a LocalDataTime
-        LocalDateTime fecha = LocalDateTime.parse(fechaStr);
+    public ResponseEntity<Collection<CursoDTO>> obtenerCursosPorFecha(@PathVariable("fecha") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fecha) {
+
         Collection<Curso> cursos = iBuscarCursoInput.buscarCursoPorFecha(fecha);
         // Si no hay cursos que coincidan con la fecha, retornamos una lista vacía
         if (cursos.isEmpty()) {
