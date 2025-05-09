@@ -1,9 +1,6 @@
 package curso.modelo;
 
-import curso.exception.FechaRequeridaException;
-import curso.exception.NivelIncorrectoException;
-import curso.exception.NombreRequeridoException;
-import curso.exception.FechaAnteriorException;
+import curso.exception.*;
 
 import java.time.LocalDateTime;
 
@@ -14,7 +11,7 @@ public class Curso {
     private final LocalDateTime fechaCierreInscripcion;
     private Nivel nivel;
 
-    public Curso(String nombre, LocalDateTime fechaCierreInscripcion, Nivel nivel) {
+    private Curso(String nombre, LocalDateTime fechaCierreInscripcion, Nivel nivel) {
         this.nombre = nombre;
         this.fechaCierreInscripcion = fechaCierreInscripcion;
         this.nivel = nivel;
@@ -22,6 +19,7 @@ public class Curso {
 
     //Factory Method
     public static Curso instancia(String nombre, LocalDateTime fecha_cierre_inscripcion, Nivel nivel) {
+
         //Valída que el nombre no sea nulo ni venga vacío
         if(nombre == null || nombre.isBlank()){
             throw new NombreRequeridoException("Nombre requerido.");

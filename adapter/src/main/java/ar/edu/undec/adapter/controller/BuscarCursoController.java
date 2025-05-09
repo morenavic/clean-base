@@ -2,49 +2,32 @@ package ar.edu.undec.adapter.controller;
 
 import ar.edu.undec.adapter.controller.dto.CursoDTO;
 import curso.input.IBuscarCursoInput;
-import curso.input.ICrearCursoInput;
 import curso.modelo.Curso;
 import curso.modelo.Nivel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.stream.Collectors;
 
-@RestController //Indica que la clase va a manejar peticiones HTTP y devolver respuestas JSON
-@RequestMapping("/cursos") //Define la ruta base para todos los endpoints de este controlador
-public class CursoController {
+@RestController
+@RequestMapping("/cursos")
+public class BuscarCursoController {
 
-    //Dependencias para crear y buscar cursos desde el core
-    private final ICrearCursoInput iCrearCursoInput;
+    //Dependencia para buscar cursos desde el core
     private final IBuscarCursoInput iBuscarCursoInput;
 
     @Autowired
     //Inyección de dependencias
-    public CursoController (ICrearCursoInput iCrearCursoInput, IBuscarCursoInput iBuscarCursoInput){
-        this.iCrearCursoInput = iCrearCursoInput;
+    public BuscarCursoController(IBuscarCursoInput iBuscarCursoInput) {
         this.iBuscarCursoInput = iBuscarCursoInput;
-    }
-
-    //Endpoint para crear un curso: POST /cursos
-    @PostMapping
-    public ResponseEntity<String> crearCursoDTO(@RequestBody CursoDTO cursoDTO){
-        //Convertimos el DTO directamente al modelo del core (Curso)
-        Curso curso = new Curso(
-                cursoDTO.getNombre(),
-                cursoDTO.getFechaCierreInscripcion(),
-                cursoDTO.getNivel()
-        );
-
-        //Llamamos al caso de uso
-        boolean cursoCreado = iCrearCursoInput.crearCurso(curso);
-
-        return ResponseEntity.ok("Curso creado correctamente.");
     }
 
     //Endpoint para listar todos los cursos: GET /cursos
@@ -53,7 +36,7 @@ public class CursoController {
         Collection<Curso> cursos = iBuscarCursoInput.buscarTodosLosCursos();
         // Convertimos cada Curso a un CursoDTO para la respuesta
         Collection<CursoDTO> dtos = cursos.stream().
-                map(this::convertirCursoACursoDTO).
+                map(CursoDTO::desdeCurso).
                 collect(Collectors.toList());
         return ResponseEntity.ok(dtos);
     }
@@ -63,7 +46,7 @@ public class CursoController {
     public ResponseEntity<CursoDTO> obtenerCursoPorNombre(@PathVariable String nombre) {
         Curso curso = iBuscarCursoInput.buscarCursoPorNombre(nombre);
         //Convertimos el curso encontrado en CursoDTO para la respuesta
-        CursoDTO cursoDTO = convertirCursoACursoDTO(curso);
+        CursoDTO cursoDTO = CursoDTO.desdeCurso(curso);
         return ResponseEntity.ok(cursoDTO);
     }
 
@@ -78,7 +61,7 @@ public class CursoController {
         }
         // Convertimos cada Curso a un CursoDTO para la respuesta
         Collection<CursoDTO> dtos = cursos.stream().
-                map(this::convertirCursoACursoDTO).
+                map(CursoDTO::desdeCurso).
                 collect(Collectors.toList());
         return ResponseEntity.ok(dtos);
     }
@@ -91,18 +74,10 @@ public class CursoController {
         Collection<Curso> cursos = iBuscarCursoInput.buscarCursoPorNivel(nivel); // Caso de uso que filtra por nivel
         //Convertimos cada Curso a un CursoDTO para la respuesta
         Collection<CursoDTO> dtos = cursos.stream().
-                map(this::convertirCursoACursoDTO).
+                map(CursoDTO::desdeCurso).
                 collect(Collectors.toList());
         return ResponseEntity.ok(dtos);
     }
 
-    //Metodo privado para convertir un objeto Curso en un objeto CursoDTO.
-    private CursoDTO convertirCursoACursoDTO(Curso curso) {
-        return new CursoDTO(
-                curso.getNombre(),
-                curso.getFechaCierreInscripcion(),
-                curso.getNivel()
-        );
-    }
 
 }

@@ -1,10 +1,11 @@
-package repository;
+package ar.edu.undec.adapter.repository;
 import ar.edu.undec.adapter.crud.ICrearCursoCRUD;
 import ar.edu.undec.adapter.entity.CursoEntity;
 import curso.modelo.Curso;
 import curso.output.ICrearCursoRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository //Marca la clase como repositorio para que Spring la gestione
 public class CrearCursoRepositorioImpl implements ICrearCursoRepositorio{
@@ -24,7 +25,14 @@ public class CrearCursoRepositorioImpl implements ICrearCursoRepositorio{
         return iCrearCursoCRUD.existsByNombre(nombre);
     }
 
-    //Guarda un curso en la BD y devuelve true si se guardó correctamente
+    //Guarda un curso en la BD y devuelve true si se guardó
+    /**La anotación Transactional en Spring indica que el metodo está
+     * involucrado en una transacción de base de datos. Si el metodo tiene
+     * éxito, la transacción se confirma (commit). Si ocurre una excepción
+     * dentro del metodo, la transacción se revierte (rollback),
+     * asegurando la integridad de los datos.
+     * **/
+    @Transactional
     @Override
     public boolean guardar(Curso curso) {
         CursoEntity cursoBD = convertirModeloAEntidad(curso);

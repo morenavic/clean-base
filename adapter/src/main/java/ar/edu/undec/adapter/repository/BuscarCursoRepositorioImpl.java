@@ -1,5 +1,6 @@
-package repository;
+package ar.edu.undec.adapter.repository;
 
+import ar.edu.undec.adapter.controller.CursoMapper;
 import ar.edu.undec.adapter.crud.IBuscarCursoCRUD;
 import ar.edu.undec.adapter.entity.CursoEntity;
 import curso.modelo.Curso;
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.stream.Collectors;
 
 @Repository //Marca la clase como repositorio para que Spring la gestione
 public class BuscarCursoRepositorioImpl implements IBuscarCursoRepositorio {
@@ -29,7 +29,7 @@ public class BuscarCursoRepositorioImpl implements IBuscarCursoRepositorio {
     @Override
     public Collection<Curso> buscarTodos() {
         Collection<CursoEntity> cursoEntities = iBuscarCursoCRUD.findAll();
-        return convertirAColeccionDeModelo(cursoEntities);
+        return CursoMapper.convertirAColeccionDeModelo(cursoEntities);
     }
 
     //Busca un curso por su nombre
@@ -40,7 +40,7 @@ public class BuscarCursoRepositorioImpl implements IBuscarCursoRepositorio {
         if (cursoEntity == null) {
             return null;
         }
-        return convertirAModelo(cursoEntity);
+        return CursoMapper.convertirAModelo(cursoEntity);
     }
 
     //Busca cursos por fecha de cierre de inscripción
@@ -52,32 +52,13 @@ public class BuscarCursoRepositorioImpl implements IBuscarCursoRepositorio {
         if (cursosEntities == null || cursosEntities.isEmpty()) {
             return Collections.emptyList();
         }
-        return convertirAColeccionDeModelo(cursosEntities);
+        return CursoMapper.convertirAColeccionDeModelo(cursosEntities);
     }
 
     //Busca cursos por nivel
     @Override
     public Collection<Curso> buscarPorNivel(Nivel nivel) {
         Collection<CursoEntity> cursosEntities = iBuscarCursoCRUD.findByNivel(nivel);
-        return convertirAColeccionDeModelo(cursosEntities);
+        return CursoMapper.convertirAColeccionDeModelo(cursosEntities);
     }
-
-    //Metodo privado para convertir una colección de entidades a modelos
-    private Collection<Curso> convertirAColeccionDeModelo(Collection<CursoEntity> cursoEntities) {
-        return cursoEntities.stream()
-                .map(this::convertirAModelo)
-                .collect(Collectors.toList());
-    }
-
-    //Metodo privado para convertir una sola entidad a modelo
-    private Curso convertirAModelo(CursoEntity cursoEntity) {
-        if (cursoEntity == null) return null;
-        return new Curso(
-                cursoEntity.getNombre(),
-                cursoEntity.getFechaCierreInscripcion(),
-                cursoEntity.getNivel()
-        );
-    }
-
-
 }

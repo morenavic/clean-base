@@ -9,44 +9,31 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class ManejadorExcepciones {
 
+    //Excepción que retorna -> HttpStatus.CONFLICT
     @ExceptionHandler(CursoExisteException.class)
     public ResponseEntity<String> manejarCursoExistente(CursoExisteException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
 
-    @ExceptionHandler(FechaAnteriorException.class)
-    public ResponseEntity<String> manejarFechaAnterior(FechaAnteriorException ex) {
+    //Excepciónes que retornan -> HttpStatus.BAD_REQUEST
+    @ExceptionHandler({FechaAnteriorException.class,
+            FechaRequeridaException.class,
+            NivelIncorrectoException.class,
+            NombreRequeridoException.class
+    })
+    public ResponseEntity<String> manejarErroresDeValidaciones(RuntimeException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
-    @ExceptionHandler(FechaRequeridaException.class)
-    public ResponseEntity<String> manejarFechaRequerida(FechaRequeridaException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
-    }
-
+    //Excepción que retorna -> HttpStatus.INTERNAL_SERVER_ERROR
     @ExceptionHandler(GuardarCursoException.class)
     public ResponseEntity<String> manejarGuardarCurso(GuardarCursoException ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
     }
 
-    @ExceptionHandler(NivelIncorrectoException.class)
-    public ResponseEntity<String> manejarNivelIncorrecto(NivelIncorrectoException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
-    }
-
+    //Excepción que retorna -> HttpStatus.NOT_FOUND
     @ExceptionHandler(NoExisteCursoException.class)
     public ResponseEntity<String> manejarNoExisteCurso(NoExisteCursoException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
-    }
-
-    @ExceptionHandler(NombreRequeridoException.class)
-    public ResponseEntity<String> manejarNombreRequerido(NombreRequeridoException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
-    }
-
-    //Manejo genérico de errores por si se escapa algo no previsto
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> manejarExcepcionGeneral(Exception ex) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error inesperado: " + ex.getMessage());
     }
 }

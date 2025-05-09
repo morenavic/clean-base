@@ -1,5 +1,7 @@
 package ar.edu.undec.adapter.controller.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import curso.modelo.Curso;
 import curso.modelo.Nivel;
 
 import java.time.LocalDateTime;
@@ -10,15 +12,18 @@ import java.time.LocalDateTime;
  */
 public class CursoDTO {
 
-    private String nombre;
-    private LocalDateTime fechaCierreInscripcion;
-    private Nivel nivel;
-
-    //Constructor vacío requerido por Spring
-    public CursoDTO() {}
+    private final String nombre;
+    private final LocalDateTime fechaCierreInscripcion;
+    private final Nivel nivel;
 
     //Constructor completo útil para crear el DTO
-    public CursoDTO(String nombre, LocalDateTime fechaCierreInscripcion, Nivel nivel) {
+    /**
+     * Jackson -> librería de serialización/deserialización JSON en Java.
+     * JsonProperty (anotación Jackson) -> para mapear datos de campos JSON
+     * a atributos del objeto sin necesidad de setters.
+     * También sirve para renombrar propiedades.
+     */
+    public CursoDTO(@JsonProperty("nombre") String nombre, @JsonProperty("fechaCierreInscripcion") LocalDateTime fechaCierreInscripcion,  @JsonProperty("nivel") Nivel nivel) {
         this.nombre = nombre;
         this.fechaCierreInscripcion = fechaCierreInscripcion;
         this.nivel = nivel;
@@ -28,23 +33,29 @@ public class CursoDTO {
         return nombre;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
     public LocalDateTime getFechaCierreInscripcion() {
         return fechaCierreInscripcion;
-    }
-
-    public void setFechaCierreInscripcion(LocalDateTime fechaCierreInscripcion) {
-        this.fechaCierreInscripcion = fechaCierreInscripcion;
     }
 
     public Nivel getNivel() {
         return nivel;
     }
 
-    public void setNivel(Nivel nivel) {
-        this.nivel = nivel;
+    //Metodo para convertir un objeto Curso en un objeto CursoDTO.
+    public static CursoDTO desdeCurso(Curso curso) {
+        return new CursoDTO(
+                curso.getNombre(),
+                curso.getFechaCierreInscripcion(),
+                curso.getNivel()
+        );
+    }
+
+    //Metodo para convertir un objeto CursoDTO en un objeto Curso.
+    public static Curso aCurso(CursoDTO cursoDTO) {
+        return Curso.instancia(
+                cursoDTO.getNombre(),
+                cursoDTO.getFechaCierreInscripcion(),
+                cursoDTO.getNivel()
+        );
     }
 }
