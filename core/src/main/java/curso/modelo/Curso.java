@@ -1,13 +1,12 @@
 package curso.modelo;
 
-import curso.exception.FechaRequeridaException;
-import curso.exception.NombreRequeridoException;
-import curso.exception.FechaAnteriorException;
+import curso.exception.*;
 
 import java.time.LocalDateTime;
 
 public class Curso {
 
+    private Integer id;
     private String nombre;
     private final LocalDateTime fechaCierreInscripcion;
     private Nivel nivel;
@@ -20,14 +19,22 @@ public class Curso {
 
     //Factory Method
     public static Curso instancia(String nombre, LocalDateTime fecha_cierre_inscripcion, Nivel nivel) {
+
+        //Valída que el nombre no sea nulo ni venga vacío
         if(nombre == null || nombre.isBlank()){
             throw new NombreRequeridoException("Nombre requerido.");
         }
+        //Valída que la fecha no sea nula
         if(fecha_cierre_inscripcion == null){
             throw new FechaRequeridaException("Fecha requerida.");
         }
+        //Valída que la fecha no sea posterior a la actual
         if(fecha_cierre_inscripcion.isBefore(LocalDateTime.now())){
             throw new FechaAnteriorException("La fecha no puede ser anterior a la actual.");
+        }
+        //Valída que el nivel no sea nulo
+        if (nivel == null) {
+            throw new NivelIncorrectoException("El nivel no puede ser nulo.");
         }
 
         return new Curso(nombre,fecha_cierre_inscripcion,nivel);
